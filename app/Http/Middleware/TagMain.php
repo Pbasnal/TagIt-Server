@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 use App\Http\Middleware\GooglePlacesApi;
 use App\Http\ApiModels\PlaceSearchQueryModel;
 use App\Http\ApiModels\HotspotModel;
+use Log;
 
 use App\Models\Hotspot;
 
@@ -35,6 +36,8 @@ class TagMain
 
 	public function StoreTag($hotspot)
 	{
+		Log::info("in tagmain: storetag");
+		Log::info(print_r($hotspot, true));
 		$hotspot->comments = "this is from TagIt";
 		Hotspot::InsertTag($hotspot);
 	}

@@ -17,14 +17,14 @@ class HotspotModel
 		// TODO: validation of data
 		if(is_null($reqData))
 			return;
-		$this->name  = $reqData['name'];
-		$this->location = $reqData['location'];
-		$this->portal = $reqData['portal'];
+		$this->name  = $reqData->input('name');
+		$this->location = $reqData->input('location');
+		$this->portal = $reqData->input('portal');
 
 		$this->info = new HotspotInformation;
-		$this->info->tags = explode ( ' ' , $reqData['tags']);
-		$this->info->comments = $reqData['comments'];
-		$this->info->images = $reqData['images'];
+		$this->info->tags = explode ( ' ' , $reqData->input('tags'));
+		$this->info->comments = $reqData->input('comments');
+		$this->info->images = $reqData->input('images');
 
 		for($i = 0; $i <  count($this->info->tags); $i++)
 		{

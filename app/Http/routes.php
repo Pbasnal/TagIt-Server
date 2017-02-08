@@ -32,6 +32,7 @@ Route::controllers([
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function () {
 	Route::group(['prefix' => 'tag'], function () {
 		Route::post('search', 'TagController@search');
+		Route::post('store', 'TagController@store');
 		Route::resource('/', 'TagController');	
 	});
 	
