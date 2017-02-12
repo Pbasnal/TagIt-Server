@@ -3,6 +3,7 @@
 namespace App\Http\ApiModels;
 
 use App\Http\Types\HotspotInformation;
+use Log;
 
 class HotspotModel
 {
@@ -11,12 +12,16 @@ class HotspotModel
 	public $location;
 	public $portal;
 
-	public function BuildModel($reqData)
+	public function BuildModel($logID, $reqData)
 	{
 
 		// TODO: validation of data
 		if(is_null($reqData))
+		{
+			Log::info($logID.": request data is null");
 			return;
+		}
+
 		$this->name  = $reqData->input('name');
 		$this->location = $reqData->input('location');
 		$this->portal = $reqData->input('portal');
@@ -30,6 +35,8 @@ class HotspotModel
 		{
 			$this->info->tags[$i] = str_replace('#', '', $this->info->tags[$i]);
 		}
+
+		Log::info($logID.": request data\n".print_r($this, true));
 	}
 
 	public function BuildFromDbModel($tagDbModel)

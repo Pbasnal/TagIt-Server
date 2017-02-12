@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Hotspot;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 
 class WelcomeController extends ApiGuardController {
@@ -35,9 +36,7 @@ class WelcomeController extends ApiGuardController {
 	{
 		$sql = DB::connection('mysql')->getDatabaseName();
 
-		$mongo = DB::connection('mongodb')->collection('users')->first();
-
-		$html = "<h3>"."Sql"."</h3>".$sql."<h3>"."Mongo"."</h3>".print_r($mongo);
+		$html = "<h3>"."Sql"."</h3>".Hotspot::all();
 
 		return $html;
 	}

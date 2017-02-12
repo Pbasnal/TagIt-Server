@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'sqlsrv',
+	'default' => 'mysql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -92,7 +92,8 @@ return [
             'username' => env('DB_MONGO_USERNAME', 'tagAdmin'),
             'password' => env('DB_MONGO_PASSWORD', '12345'),
             'options' => [
-                'db' => 'admin' // sets the authentication database required by mongo 3
+                'db' => 'admin', // sets the authentication database required by mongo 3
+                'ssl' => true
             ]
         ],
 	],

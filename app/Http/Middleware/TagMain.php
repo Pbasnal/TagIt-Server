@@ -34,12 +34,11 @@ class TagMain
 		return $this->CombineResults($hotspotResults, $googleResults);
 	}
 
-	public function StoreTag($hotspot)
+	public function StoreTag($logId, $hotspot)
 	{
-		Log::info("in tagmain: storetag");
-		Log::info(print_r($hotspot, true));
-		$hotspot->comments = "this is from TagIt";
-		Hotspot::InsertTag($hotspot);
+		Log::info($logId.": in tagmain: storetag");
+		Log::info($logId."".print_r($hotspot, true));
+		Hotspot::InsertTag($logId, $hotspot);
 	}
 
 	private function StoreGoogleResults($hotspotResults, $googleResults, $hashTag)

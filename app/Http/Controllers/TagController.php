@@ -52,11 +52,14 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //TODO: Validations and verifications
-        Log::info("in tag controller: store");
-        Log::info(print_r($request->input('name'), true));
+
+        $logId = com_create_guid();
+
+        Log::info($logId.": in tag controller: store");
+        Log::info($logId.":".print_r($request->input('name'), true));
         $reqModel = new HotspotModel();
-        $reqModel->BuildModel($request);
-        $this->tagMain->StoreTag($reqModel);
+        $reqModel->BuildModel($logId, $request);
+        $this->tagMain->StoreTag($logId, $reqModel);
         
         return Hotspot::all();
     }
