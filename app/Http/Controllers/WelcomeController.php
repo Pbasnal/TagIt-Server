@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 
 class WelcomeController extends ApiGuardController {
@@ -32,7 +33,13 @@ class WelcomeController extends ApiGuardController {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		$sql = DB::connection('mysql')->getDatabaseName();
+
+		$mongo = DB::connection('mongodb')->collection('users')->first();
+
+		$html = "<h3>"."Sql"."</h3>".$sql."<h3>"."Mongo"."</h3>".print_r($mongo);
+
+		return $html;
 	}
 
 }
