@@ -34,11 +34,9 @@ class WelcomeController extends ApiGuardController {
 	 */
 	public function index()
 	{
-		$sql = DB::connection('mysql')->getDatabaseName();
+		$html = "<h3>"."Hotspots"."</h3>".Hotspot::all();
 
-		$html = "<h3>"."Sql"."</h3>".Hotspot::all();
-
-		return $html;
+		return 'Welcome';
 	}
 
 }

@@ -61,14 +61,14 @@ class TagController extends Controller
         $reqModel->BuildModel($logId, $request);
         $this->tagMain->StoreTag($logId, $reqModel);
         
-        return Hotspot::all();
+        return "Stored Successfully";
     }
 
     public function search(Request $request)
     {
         Log::info('tag controller');
         $reqModel = new PlaceSearchQueryModel();
-        $reqModel->BuildModel($request->input('requestData'));
+        $reqModel->BuildModel($request->request);
         $response = $this->tagMain->SearchPlace($reqModel);
 
         return $response;

@@ -12,8 +12,8 @@ class PlaceSearchQueryModel
 	{
 		if(is_null($reqData))
 			return;
-		$this->query  = $reqData['query'];
-		$this->center = $reqData['center'];
-		$this->bounds = $reqData['bounds'];
+		$this->query  = $reqData->get('query');
+		$this->center = $reqData->get('center');
+		$this->bounds = $reqData->get('bounds');
 	}
 }

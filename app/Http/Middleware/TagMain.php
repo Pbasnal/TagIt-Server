@@ -26,6 +26,8 @@ class TagMain
 
 	public function SearchPlace(PlaceSearchQueryModel $query)
 	{
+		Log::info("Searching in TagMain: searching for -> ".$query->query);
+
 		$hotspotResults = Hotspot::where("tags", "=",  $query->query)->get();
 		$googleResults = $this->googlePlacesApi->SearchPlace($query);
 
@@ -37,7 +39,7 @@ class TagMain
 	public function StoreTag($logId, $hotspot)
 	{
 		Log::info($logId.": in tagmain: storetag");
-		Log::info($logId."".print_r($hotspot, true));
+		//Log::info($logId."".print_r($hotspot, true));
 		Hotspot::InsertTag($logId, $hotspot);
 	}
 
