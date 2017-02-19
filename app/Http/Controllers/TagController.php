@@ -66,10 +66,13 @@ class TagController extends Controller
 
     public function search(Request $request)
     {
-        Log::info('tag controller');
+        $logId = com_create_guid();
+        Log::info($logId.' : tag controller');
+        
+
         $reqModel = new PlaceSearchQueryModel();
         $reqModel->BuildModel($request->request);
-        $response = $this->tagMain->SearchPlace($reqModel);
+        $response = $this->tagMain->SearchPlace($logId, $reqModel);
 
         return $response;
     }

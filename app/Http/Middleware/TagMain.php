@@ -24,14 +24,14 @@ class TagMain
 		return $this->googlePlacesApi->DummyCall();
 	}
 
-	public function SearchPlace(PlaceSearchQueryModel $query)
+	public function SearchPlace($logId, PlaceSearchQueryModel $query)
 	{
 		Log::info("Searching in TagMain: searching for -> ".$query->query);
 
 		$hotspotResults = Hotspot::where("tags", "=",  $query->query)->get();
 		$googleResults = $this->googlePlacesApi->SearchPlace($query);
 
-		$this->StoreGoogleResults($hotspotResults, $googleResults, $query->query);
+		$this->StoreGoogleResults($logId, $hotspotResults, $googleResults, $query->query);
 
 		return $this->CombineResults($hotspotResults, $googleResults);
 	}
@@ -43,14 +43,14 @@ class TagMain
 		Hotspot::InsertTag($logId, $hotspot);
 	}
 
-	private function StoreGoogleResults($hotspotResults, $googleResults, $hashTag)
+	private function StoreGoogleResults($logId, $hotspotResults, $googleResults, $hashTag)
 	{
 		for($i = 0; $i < count($googleResults); $i++)
 		{
 			$hotspot = new HotspotModel;
 			$hotspot->BuildFromGoogleResponse($googleResults[$i], $hashTag);
 			if(!$this->TagExists($hotspot, $hotspotResults))
-				$this->StoreTag($hotspot);
+				$this->StoreTag($logId, $hotspot);
 		}
 	}
 
