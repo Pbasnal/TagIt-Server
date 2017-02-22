@@ -13,20 +13,22 @@ use Log;
  */
 class UserModel
 {
+    //public $deviceId;
+    public $number;
     public $username;
-    public $email;
-    public $password;
 
     public function BuildModel($reqData)
 	{
 		// TODO: validation of data
 
+		Log::info("building user model\n");
         Log::info($reqData);
 
 		if(is_null($reqData))
 			return;
-		$this->username  = $reqData['username'];
-		$this->email = $reqData['email'];
-		$this->password = $reqData['password'];
+
+		//$this->deviceId  = $reqData['deviceid'];
+		$this->number = $reqData['number'];
+		$this->username = $reqData['username'];
 	}
 }

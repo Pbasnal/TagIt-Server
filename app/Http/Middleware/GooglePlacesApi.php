@@ -3,13 +3,14 @@ namespace App\Http\Middleware;
 
 use joshtronic\GooglePlaces;
 use App\Http\ApiModels\PlaceSearchQueryModel;
+use Log;
 
 class GooglePlacesApi
 {
 	private $placesUri = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=';
 	public function DummyCall()
 	{
-		$google_places = new GooglePlaces(config('googleapi.googlekey'));
+		$google_places = new GooglePlaces(env('googlekey'));
 
 		$lat = 17.4631839;
 		$lng = 78.35364379999999;
@@ -25,7 +26,7 @@ class GooglePlacesApi
 
 	public function SearchPlace(PlaceSearchQueryModel $query)
 	{
-		$googleKey = config('googleapi.googlekey');
+		$googleKey = env('googlekey');
 		$google_places = new GooglePlaces($googleKey);
 
 		$radius = $this->GetRadiusFromBoundsAndCenter($query->center, $query->bounds);
@@ -34,6 +35,9 @@ class GooglePlacesApi
 		$google_places->radius = $radius;
 		$google_places->type = $query->query;
 		$nearby_places = $google_places->nearbySearch();
+
+		if($nearby_places['status'] != 'OK')
+			Log::error(json_encode($nearby_places));
 
 		return $nearby_places['results'];
 	}

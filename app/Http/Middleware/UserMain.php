@@ -2,7 +2,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\ApiModels\UserModel;
-use App\User;
+use App\Models\User;
 use Log;
 /**
  * UserMain short summary.
@@ -14,34 +14,36 @@ use Log;
  */
 class UserMain
 {
-    public function CreateUser(UserModel $userModel)
+    public function CreateUser($logId, UserModel $userModel)
     {
         //todo: response object to contain error and messages
-        //Todo: proper validation of usernames and emails and passwords
 
-        Log::info("in create");
+        Log::info($logId." in create");
+        User::all();
         Log::info($userModel->username);
 
-        $existingUsername =  User::where("username", "=",  $userModel->username)->get();
-        $existingEmail =  User::where("email", "=",  $userModel->email)->get();
+        //$existingusername =  User::where("username", "=",  $userModel->username)->get();
+        //$existingDevice =  User::where("deviceId", "=",  $userModel->deviceId)->get();
+        $existingNumber =  User::where("number", "=",  $userModel->number)->get();
 
-        if(count($existingUsername) !== 0)
+        //Log::info("user: ".$existingusername);
+        //Log::info("device: ".$existingDevice);
+        Log::info("number: ".$existingNumber);
+
+        /*if(count($existingusername) !== 0)
         {
-            return "User Already Exists";
+            return "User Already registered";
         }
-        if(count($existingEmail) !== 0)
+        if(count($existingDevice) !== 0)
         {
-            return "Email already exists";
+            return "Device already registered";
+        }*/
+        if(count($existingNumber) !== 0)
+        {
+            return "Number already registered";
         }
 
-        $user = new User;
-        $user->username = $userModel->username;
-        $user->email    = $userModel->email;
-        $user->password =  \Illuminate\Support\Facades\Hash::make($userModel->password);
-
-        $user->created_at = $user->updated_at = date("Y-m-d H:i:s");
-
-        $user->save();
+        User::InsertUser($logId, $userModel);
 
         return User::all();
     }

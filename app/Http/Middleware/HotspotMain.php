@@ -9,8 +9,9 @@ use App\Http\ApiModels\HotspotModel;
 use Log;
 
 use App\Models\Hotspot;
+use App\Models\UserRequest;
 
-class TagMain
+class HotspotMain
 {
 	private $googlePlacesApi;
 
@@ -24,31 +25,38 @@ class TagMain
 		return $this->googlePlacesApi->DummyCall();
 	}
 
-	public function SearchPlace($logId, PlaceSearchQueryModel $query)
+	public function SearchHotspot($logId, PlaceSearchQueryModel $query)
 	{
 		Log::info("Searching in TagMain: searching for -> ".$query->query);
 
-		$hotspotResults = Hotspot::where("tags", "=",  $query->query)->get();
+		$hotspotResults = Hotspot::whereRaw(['tags' => ['$all' => [$query->query]] ])->get();
+		
 		$googleResults = $this->googlePlacesApi->SearchPlace($query);
-
-		$this->StoreGoogleResults($logId, $hotspotResults, $googleResults, $query->query);
+        
+		//$this->StoreGoogleResults($logId, $hotspotResults, $googleResults, $query->query);
 
 		return $this->CombineResults($hotspotResults, $googleResults);
 	}
 
-	public function StoreTag($logId, $hotspot)
+	public function StoreHotspot($logId, $userRequest)
 	{
 		Log::info($logId.": in tagmain: storetag");
 		//Log::info($logId."".print_r($hotspot, true));
-		Hotspot::InsertTag($logId, $hotspot);
+		if(!UserRequest::InsertUserRequest($logId, $userRequest))
+			return "User doesn't exists";
+
+		Hotspot::InsertHotspot($logId, $userRequest->request);
 	}
 
 	private function StoreGoogleResults($logId, $hotspotResults, $googleResults, $hashTag)
 	{
+	    $tags = array();
+	    array_push($tags, $hashTag);
+	    
 		for($i = 0; $i < count($googleResults); $i++)
 		{
 			$hotspot = new HotspotModel;
-			$hotspot->BuildFromGoogleResponse($googleResults[$i], $hashTag);
+			$hotspot->BuildFromGoogleResponse($googleResults[$i], $tags);
 			if(!$this->TagExists($hotspot, $hotspotResults))
 				$this->StoreTag($logId, $hotspot);
 		}
@@ -65,7 +73,10 @@ class TagMain
 			if(!$this->TagExists($hotspot, $results))
 				array_push($results, $hotspot);
 		}
-
+        
+        if($googleResults == null)
+			return $results;
+			
 		for($i = 0; $i < count($googleResults); $i++)
 		{
 			$hotspotResults = new HotspotModel;

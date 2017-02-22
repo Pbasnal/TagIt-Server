@@ -30,14 +30,15 @@ Route::controllers([
 // Tag resources
 
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function () {
-	Route::group(['prefix' => 'tag'], function () {
-		Route::post('search', 'TagController@search');
-		Route::post('store', 'TagController@store');
-		Route::resource('/', 'TagController');	
+	Route::group(['prefix' => 'hotspot'], function () {
+		Route::post('search', 'HotspotController@search');
+		Route::post('store', 'HotspotController@store');
+		
 	});
 	
 	Route::group(['prefix' => 'user'], function () {
-	    Route::resource('/', 'UserController@index');
+		Route::get('{number}', 'UserController@show');	
+	    Route::resource('/', 'UserController');
 	});
 });
 

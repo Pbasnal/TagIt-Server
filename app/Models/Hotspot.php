@@ -16,7 +16,7 @@ class Hotspot extends Moloquent
 {
 	protected $connection = 'mongodb';
 
-	public static function InsertTag($logId, HotspotModel $inHotspot)
+	public static function InsertHotspot($logId, HotspotModel $inHotspot)
 	{
 		Log::info($logId.": inserting hotspot");
 		
