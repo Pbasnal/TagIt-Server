@@ -29,10 +29,13 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        //Log::info($request);
+        $logId = 1234567890;
+        Log::info(''.$logId.' : '.$request);
+
+        
         if (function_exists('com_create_guid'))
             $logId = com_create_guid();
-        $logId = 1234567890;
+
         $reqModel = new UserModel;
         $reqModel->BuildModel($request);
 
@@ -41,7 +44,7 @@ class UserController extends Controller
 
     public function show($number)
     {
-        Log::info('in show user request');
+        Log::info('in show user request '.$number);
         $userRequests = new UserRequestModel();
         return $userRequests->GetAllRequestOfTheUser($number);
     }

@@ -4,6 +4,10 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel {
 
+	function __construct()
+	{
+		error_log("HttpKernel");
+	}
 	/**
 	 * The application's global HTTP middleware stack.
 	 *

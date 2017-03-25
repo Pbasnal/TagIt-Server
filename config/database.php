@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'sqlsrv',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -90,7 +90,8 @@ return [
             'port' => env('DB_MONGO_PORT', 27017),
             'database' => env('DB_MONGO_DATABASE', 'tagdb'),
             'username' => env('DB_MONGO_USERNAME', 'tagAdmin'),
-            'password' => env('DB_MONGO_PASSWORD', '12345')
+            'password' => env('DB_MONGO_PASSWORD', '12345'),
+            //'options'  => ['ssl' => true]
         ],
 	],
 
